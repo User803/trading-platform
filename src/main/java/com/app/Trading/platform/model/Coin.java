@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Coin {
@@ -296,5 +297,44 @@ public class Coin {
 
     public void setLastUpdated(Date lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Coin coin = (Coin) o;
+        return Double.compare(currentPrice, coin.currentPrice) == 0 && marketCap == coin.marketCap && marketCapRank == coin.marketCapRank && fullyDilutedValuation == coin.fullyDilutedValuation && totalVolume == coin.totalVolume && Double.compare(high24h, coin.high24h) == 0 && Double.compare(low24h, coin.low24h) == 0 && Double.compare(priceChange24h, coin.priceChange24h) == 0 && Double.compare(priceChangePercentage24h, coin.priceChangePercentage24h) == 0 && marketCapChange24h == coin.marketCapChange24h && Double.compare(marketCapChangePercentage24h, coin.marketCapChangePercentage24h) == 0 && Double.compare(circulatingSupply, coin.circulatingSupply) == 0 && Double.compare(totalSupply, coin.totalSupply) == 0 && Double.compare(maxSupply, coin.maxSupply) == 0 && Double.compare(ath, coin.ath) == 0 && Double.compare(athChangePercentage, coin.athChangePercentage) == 0 && Double.compare(atl, coin.atl) == 0 && Double.compare(atlChangePercentage, coin.atlChangePercentage) == 0 && Objects.equals(id, coin.id) && Objects.equals(symbol, coin.symbol) && Objects.equals(name, coin.name) && Objects.equals(image, coin.image) && Objects.equals(athDate, coin.athDate) && Objects.equals(atlDate, coin.atlDate) && Objects.equals(roi, coin.roi) && Objects.equals(lastUpdated, coin.lastUpdated);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(symbol);
+        result = 31 * result + Objects.hashCode(name);
+        result = 31 * result + Objects.hashCode(image);
+        result = 31 * result + Double.hashCode(currentPrice);
+        result = 31 * result + Long.hashCode(marketCap);
+        result = 31 * result + marketCapRank;
+        result = 31 * result + Long.hashCode(fullyDilutedValuation);
+        result = 31 * result + Long.hashCode(totalVolume);
+        result = 31 * result + Double.hashCode(high24h);
+        result = 31 * result + Double.hashCode(low24h);
+        result = 31 * result + Double.hashCode(priceChange24h);
+        result = 31 * result + Double.hashCode(priceChangePercentage24h);
+        result = 31 * result + Long.hashCode(marketCapChange24h);
+        result = 31 * result + Double.hashCode(marketCapChangePercentage24h);
+        result = 31 * result + Double.hashCode(circulatingSupply);
+        result = 31 * result + Double.hashCode(totalSupply);
+        result = 31 * result + Double.hashCode(maxSupply);
+        result = 31 * result + Double.hashCode(ath);
+        result = 31 * result + Double.hashCode(athChangePercentage);
+        result = 31 * result + Objects.hashCode(athDate);
+        result = 31 * result + Double.hashCode(atl);
+        result = 31 * result + Double.hashCode(atlChangePercentage);
+        result = 31 * result + Objects.hashCode(atlDate);
+        result = 31 * result + Objects.hashCode(roi);
+        result = 31 * result + Objects.hashCode(lastUpdated);
+        return result;
     }
 }

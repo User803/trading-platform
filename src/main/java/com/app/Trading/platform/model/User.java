@@ -6,9 +6,9 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
 
     @Id
@@ -72,5 +72,24 @@ public class User {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(fullName, user.fullName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(twoFactorAuth, user.twoFactorAuth) && role == user.role;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(fullName);
+        result = 31 * result + Objects.hashCode(email);
+        result = 31 * result + Objects.hashCode(password);
+        result = 31 * result + Objects.hashCode(twoFactorAuth);
+        result = 31 * result + Objects.hashCode(role);
+        return result;
     }
 }
