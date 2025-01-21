@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class ForgotPasswordToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @OneToOne
