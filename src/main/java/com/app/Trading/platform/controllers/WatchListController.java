@@ -45,9 +45,7 @@ public class WatchListController {
     }
 
     @GetMapping("/{watchlistId}")
-    public ResponseEntity<WatchList> createWatchlist(
-            @PathVariable Long watchlistId) {
-
+    public ResponseEntity<WatchList> createWatchlist(@PathVariable Long watchlistId) {
         WatchList watchList = watchListService.findById(watchlistId);
 
         return new ResponseEntity<>(watchList, HttpStatus.OK);

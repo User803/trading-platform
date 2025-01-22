@@ -45,6 +45,4 @@ public class AssetController {
         List<Asset> assets = assetService.getUserAssets(user.getId());
         return ResponseEntity.ok(assets);
     }
-
-
 }

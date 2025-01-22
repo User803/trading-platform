@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class WithdrawalServiceImpl implements WithdrawalService{
 
     private final WithdrawalRepository withdrawalRepository;

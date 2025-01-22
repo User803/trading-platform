@@ -45,7 +45,7 @@ public class UserController {
 
     @PostMapping("/users/verification/{verificationType}/send-otp")
     public ResponseEntity<String> sendVerificationOtp(@RequestHeader("Authorization") String jwt,
-                                                    @PathVariable VerificationType verificationType) throws MessagingException {
+                                                      @PathVariable VerificationType verificationType) throws MessagingException {
         User user = userService.findUserProfileByJwt(jwt);
 
         VerificationCode verificationCode =
@@ -140,5 +140,4 @@ public class UserController {
 
         throw new RuntimeException("wrong otp");
     }
-
 }

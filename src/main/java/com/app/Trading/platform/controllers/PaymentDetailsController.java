@@ -47,5 +47,4 @@ public class PaymentDetailsController {
 
         return new ResponseEntity<>(paymentDetails, HttpStatus.OK);
     }
-
 }

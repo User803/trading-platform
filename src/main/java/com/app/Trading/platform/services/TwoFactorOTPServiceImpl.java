@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class TwoFactorOTPServiceImpl implements TwoFactorOTPService{
     private final TwoFactorOTPRepository twoFactorOTPRepository;
 

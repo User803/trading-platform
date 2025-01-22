@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class CoinServiceImpl implements CoinService {
 
     private final CoinRepository coinRepository;
@@ -69,6 +69,7 @@ public class CoinServiceImpl implements CoinService {
     @Override
     public String getCoinDetails(String coinId) {
         String url = "https://api.coingecko.com/api/v3/coins/"+coinId;
+
         RestTemplate restTemplate = new RestTemplate();
 
         try {
@@ -90,15 +91,16 @@ public class CoinServiceImpl implements CoinService {
             coin.setTotalVolume(marketData.get("total_volume").get("usd").asLong());
             coin.setHigh24h(marketData.get("high_24h").get("usd").asDouble());
             coin.setLow24h(marketData.get("low_24h").get("usd").asDouble());
-            coin.setPriceChange24h(marketData.get("price_change_24h").get("usd").asDouble());
-            coin.setPriceChangePercentage24h(marketData.get("price_change_percentage_24h").get("usd").asDouble());
+            coin.setPriceChange24h(marketData.get("price_change_24h").asDouble());
+            coin.setPriceChangePercentage24h(marketData.get("price_change_percentage_24h").asDouble());
             coin.setMarketCapChange24h(marketData.get("market_cap_change_24h").asLong());
             coin.setMarketCapChangePercentage24h(marketData.get("market_cap_change_percentage_24h").asLong());
-            coin.setTotalSupply(marketData.get("total_supply").get("usd").asLong());
+            coin.setTotalSupply(marketData.get("total_supply").asLong());
             coinRepository.save(coin);
 
             return response.getBody();
         } catch (HttpClientErrorException | HttpServerErrorException | JsonProcessingException e) {
+
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -121,7 +123,7 @@ public class CoinServiceImpl implements CoinService {
 
     @Override
     public String getTop50CoinsByMarketCapRank() {
-        String url = "https://api.coingecko.com/api/v3/coins/markets/vs_currency=usd&per_page=50&page=1";
+        String url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=50&page=1";
         RestTemplate restTemplate = new RestTemplate();
 
         try {

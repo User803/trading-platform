@@ -1,6 +1,7 @@
 package com.app.Trading.platform.model;
 
 import jakarta.persistence.*;
+import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -11,7 +12,8 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private BigDecimal balance;
+    @NumberFormat(pattern = "#,###.00")
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @OneToOne
     private User user;

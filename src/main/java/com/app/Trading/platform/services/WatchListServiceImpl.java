@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class WatchListServiceImpl implements WatchListService{
 
     private final WatchListRepository watchListRepository;

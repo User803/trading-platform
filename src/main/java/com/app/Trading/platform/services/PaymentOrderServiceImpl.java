@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class PaymentOrderServiceImpl implements PaymentOrderService{
 
     private static final Logger log = LoggerFactory.getLogger(PaymentOrderServiceImpl.class);
@@ -49,6 +49,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService{
         paymentOrder.setUser(user);
         paymentOrder.setAmount(amount);
         paymentOrder.setPaymentMethod(paymentMethod);
+        paymentOrder.setStatus(PaymentOrderStatus.PENDING);
 
         return paymentOrderRepository.save(paymentOrder);
     }
@@ -61,6 +62,10 @@ public class PaymentOrderServiceImpl implements PaymentOrderService{
 
     @Override
     public boolean proceedPaymentOrder(PaymentOrder paymentOrder, String paymentId) throws RazorpayException {
+        if (paymentOrder.getStatus() == null) {
+            paymentOrder.setStatus(PaymentOrderStatus.PENDING);
+        }
+
         if (paymentOrder.getStatus().equals(PaymentOrderStatus.PENDING)) {
             if (paymentOrder.getPaymentMethod().equals(PaymentMethod.RAZORPAY)) {
                 RazorpayClient razorpay = new RazorpayClient(apiKey, apiSecretKey);
@@ -88,7 +93,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService{
     }
 
     @Override
-    public PaymentResponse createRazorpayPaymentLink(User user, Long amount) throws RazorpayException {
+    public PaymentResponse createRazorpayPaymentLink(User user, Long amount, Long orderId) throws RazorpayException {
         Long Amount = amount * 100;
 
         try {
@@ -115,7 +120,7 @@ public class PaymentOrderServiceImpl implements PaymentOrderService{
             paymentLinkRequest.put("reminder_enable", true);
 
             // Set the callback URL and method
-            paymentLinkRequest.put("callback_url", "http://localhost:5173/wallet");
+            paymentLinkRequest.put("callback_url", "http://localhost:5173/wallet?order_id" + orderId);
             paymentLinkRequest.put("callback_method", "get");
 
             // Create the payment link using the paymentLink.create() method

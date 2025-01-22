@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/api/wallet")
 public class WalletController {
@@ -26,14 +28,12 @@ public class WalletController {
         this.paymentOrderService = paymentOrderService;
     }
 
-
-    //    ** 5:15:25 URL
     @GetMapping
-    public ResponseEntity<Wallet> getUserWallet(@RequestParam("Authorization") String jwt) {
+    public ResponseEntity<Wallet> getUserWallet(@RequestHeader("Authorization") String jwt) {
         User user = userService.findUserProfileByJwt(jwt);
         Wallet wallet = walletService.getUserWallet(user);
 
-        return new ResponseEntity<>(wallet, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(wallet, HttpStatus.OK);
     }
 
     @PutMapping("/{walletId}/transfer")
@@ -75,6 +75,10 @@ public class WalletController {
         Wallet wallet = walletService.getUserWallet(user);
         PaymentOrder order = paymentOrderService.getPaymentOrderById(orderId);
         boolean status = paymentOrderService.proceedPaymentOrder(order, paymentId);
+
+//        if (wallet.getBalance() == null) {
+//            wallet.setBalance(BigDecimal.ZERO);
+//        }
 
         if (status) {
             wallet = walletService.addBalance(wallet, order.getAmount());

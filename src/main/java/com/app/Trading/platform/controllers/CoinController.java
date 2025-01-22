@@ -24,18 +24,19 @@ public class CoinController {
     }
 
     @GetMapping
-    ResponseEntity<List<Coin>> getCoinList(@RequestParam("page") int page) {
-        return new ResponseEntity<>(coinService.getCoinList(page), HttpStatus.ACCEPTED);
+    ResponseEntity<List<Coin>> getCoinList(
+            @RequestParam(required = false, name = "page") int page) {
+        return new ResponseEntity<>(coinService.getCoinList(page), HttpStatus.OK);
     }
 
-    @GetMapping("/{coinId}/chart")
+    @GetMapping("/chart/{coinId}")
     ResponseEntity<JsonNode> getMarketChart(
             @PathVariable String coinId,
             @RequestParam("days") int days) throws JsonProcessingException {
 
         String response = coinService.getMarketChart(coinId, days);
         JsonNode jsonNode = objectMapper.readTree(response);
-        return new ResponseEntity<>(jsonNode, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(jsonNode, HttpStatus.OK);
     }
 
     @GetMapping("/search")

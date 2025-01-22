@@ -29,7 +29,7 @@ public class WithdrawalController {
     }
 
     @PostMapping("/api/withdrawal/{amount}")
-    public ResponseEntity<?> withdrawalRequest(
+    public ResponseEntity<Withdrawal> withdrawalRequest(
             @PathVariable Long amount,
             @RequestHeader("Authorization") String jwt) {
 
@@ -51,7 +51,7 @@ public class WithdrawalController {
     }
 
     @PatchMapping("/api/admin/withdrawal/{id}/proceed/{accept}")
-    public ResponseEntity<?> proceedWithdrawal(
+    public ResponseEntity<Withdrawal> proceedWithdrawal(
             @PathVariable Long id,
             @PathVariable boolean accept,
             @RequestHeader("Authorization") String jwt) {

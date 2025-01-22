@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class WalletServiceImpl implements WalletService{
 
     private final WalletRepository walletRepository;
@@ -28,6 +28,7 @@ public class WalletServiceImpl implements WalletService{
         if (wallet == null) {
             wallet = new Wallet();
             wallet.setUser(user);
+            walletRepository.save(wallet);
         }
         return wallet;
     }

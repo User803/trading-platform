@@ -13,6 +13,7 @@ public class Withdrawal {
     private Long id;
 
     private WithdrawalStatus withdrawalStatus;
+
     private Long amount;
     private LocalDateTime date = LocalDateTime.now();
 

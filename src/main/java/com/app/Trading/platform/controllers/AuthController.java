@@ -8,6 +8,7 @@ import com.app.Trading.platform.response.AuthResponse;
 import com.app.Trading.platform.services.CustomUserDetailsService;
 import com.app.Trading.platform.services.EmailService;
 import com.app.Trading.platform.services.TwoFactorOTPService;
+import com.app.Trading.platform.services.WatchListService;
 import com.app.Trading.platform.utils.OTPUtils;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
@@ -29,12 +30,14 @@ public class AuthController {
     private final CustomUserDetailsService customUserDetailsService;
     private final TwoFactorOTPService twoFactorOTPService;
     private final EmailService emailService;
+    private final WatchListService watchListService;
 
-    public AuthController(UserRepository userRepository, CustomUserDetailsService customUserDetailsService, TwoFactorOTPService twoFactorOTPService, EmailService emailService) {
+    public AuthController(UserRepository userRepository, CustomUserDetailsService customUserDetailsService, TwoFactorOTPService twoFactorOTPService, EmailService emailService, WatchListService watchListService) {
         this.userRepository = userRepository;
         this.customUserDetailsService = customUserDetailsService;
         this.twoFactorOTPService = twoFactorOTPService;
         this.emailService = emailService;
+        this.watchListService = watchListService;
     }
 
     @PostMapping("/signup")
@@ -49,7 +52,9 @@ public class AuthController {
         newUser.setFullName(user.getFullName());
         newUser.setEmail(user.getEmail());
         newUser.setPassword(user.getPassword());
-        userRepository.save(newUser);
+        User savedUser = userRepository.save(newUser);
+
+        watchListService.createWatchList(savedUser);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
                 user.getEmail(),
@@ -81,7 +86,6 @@ public class AuthController {
         User existingUser = userRepository.findUserByEmail(username).orElse(null);
 
         // if 2FA is enabled
-//        if (user.getTwoFactorAuth().isEnabled())
         if (user.getTwoFactorAuth().isEnabled()){
             AuthResponse authResponse = new AuthResponse();
             authResponse.setMessage("Two factor authentication is enabled");
@@ -126,9 +130,9 @@ public class AuthController {
                 userDetails.getAuthorities());
     }
 
-    @PostMapping("/two-factor/otp/{otps}")
+    @PostMapping("/two-factor/otp/{otp}")
     public ResponseEntity<AuthResponse> verifyLoginOtp(@PathVariable String otp,
-                                                        @RequestParam String id) {
+                                                       @RequestParam String id) {
         TwoFactorOTP twoFactorOTP = twoFactorOTPService.findUserById(id);
 
         if (twoFactorOTPService.verifyTwoFactorOTP(twoFactorOTP, otp)) {

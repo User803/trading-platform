@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class OrderServiceImpl implements OrderService{
 
     private final OrderRepository orderRepository;
