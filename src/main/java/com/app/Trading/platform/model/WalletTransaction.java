@@ -12,6 +12,7 @@ public class WalletTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private WalletTransactionType transactionType;
     private LocalDate date;
     private String transferId;

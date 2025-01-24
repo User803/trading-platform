@@ -13,7 +13,11 @@ public class PaymentOrder {
     private Long id;
 
     private Long amount;
+
+    @Enumerated(EnumType.STRING)
     private PaymentOrderStatus status;
+
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
     @ManyToOne

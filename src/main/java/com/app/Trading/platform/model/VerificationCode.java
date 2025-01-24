@@ -12,6 +12,8 @@ public class VerificationCode {
     private String otp;
     private String email;
     private String mobile;
+
+    @Enumerated(EnumType.STRING)
     private VerificationType verificationType;
 
     @OneToOne

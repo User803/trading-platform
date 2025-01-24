@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-public class Coin {
+public class  Coin {
 
     @Id
     @JsonProperty

@@ -14,6 +14,8 @@ public class ForgotPasswordToken {
     private User user;
     private String otp;
     private String sendTo;
+
+    @Enumerated(EnumType.STRING)
     private VerificationType verificationType;
 
     public String getId() {

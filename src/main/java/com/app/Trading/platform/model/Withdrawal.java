@@ -12,6 +12,7 @@ public class Withdrawal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private WithdrawalStatus withdrawalStatus;
 
     private Long amount;

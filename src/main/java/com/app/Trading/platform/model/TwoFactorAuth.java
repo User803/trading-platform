@@ -1,11 +1,10 @@
 package com.app.Trading.platform.model;
 
 import com.app.Trading.platform.domain.VerificationType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.Objects;
 
 @NoArgsConstructor
@@ -13,6 +12,8 @@ import java.util.Objects;
 public class TwoFactorAuth {
 
     private boolean isEnabled = false;
+
+    @Enumerated(EnumType.STRING)
     private VerificationType sendTo;
 
     public boolean isEnabled() {
